@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title><%= invite.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #fff7ef, #f3e6d8);
+      font-family: "Inter", sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+      color: #3a2c20;
+    }
+
+    .invite-container {
+      max-width: 780px;
+      width: 100%;
+      background: linear-gradient(180deg, #fffdf9, #f7efe4);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      border: 1px solid rgba(120, 90, 60, 0.25);
+    }
+
+    /* FULL IMAGE – NO CROP */
+    .cover-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1e2d3;
+      padding: 18px;
+    }
+
+    .cover {
+      width: 100%;
+      height: 100%;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      border-radius: 18px;
+    }
+
+    .invite-body {
+      padding: 36px 32px 40px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5b3b1e;
+    }
+
+    .host {
+      margin-top: 12px;
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8a6b4f;
+    }
+
+    .divider {
+      width: 90px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #b38b5d, transparent);
+      margin: 22px auto;
+    }
+
+    .message {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 18px;
+      line-height: 1.9;
+      color: #4a3627;
+      margin-bottom: 30px;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .detail-box {
+      padding: 14px 10px;
+      border-top: 1px solid rgba(120, 90, 60, 0.25);
+      border-bottom: 1px solid rgba(120, 90, 60, 0.25);
+    }
+
+    .label {
+      font-size: 12px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #9b7b5d;
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: #3f2c1d;
+    }
+
+    @media (max-width: 576px) {
+      h1 { font-size: 32px; }
+      .message { font-size: 17px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="invite-container">
+
+    <% if (invite.meta && invite.meta.coverImage) { %>
+      <div class="cover-wrapper">
+        <div class="cover" style="background-image:url('<%= invite.meta.coverImage %>')"></div>
+      </div>
+    <% } %>
+
+    <div class="invite-body">
+
+      <h1><%= invite.title %></h1>
+
+      <% if (invite.hostName) { %>
+        <div class="host"><%= invite.hostName %></div>
+      <% } %>
+
+      <div class="divider"></div>
+
+      <% if (invite.message) { %>
+        <div class="message"><%= invite.message %></div>
+      <% } %>
+
+      <div class="details">
+
+        <% if (invite.date) { %>
+          <div class="detail-box">
+            <div class="label">Date</div>
+            <div class="value"><%= new Date(invite.date).toDateString() %></div>
+          </div>
+        <% } %>
+
+        <% if (invite.time) { %>
+          <div class="detail-box">
+            <div class="label">Time</div>
+            <div class="value"><%= invite.time %></div>
+          </div>
+        <% } %>
+
+        <% if (invite.venue) { %>
+          <div class="detail-box">
+            <div class="label">Venue</div>
+            <div class="value"><%= invite.venue %></div>
+          </div>
+        <% } %>
+
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

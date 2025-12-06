@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/><title>Admin Dashboard</title><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"/></head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a class="brand" href="/admin"><div class="logo">I</div><div><h1>Admin Dashboard</h1><p class="small">System overview</p></div></a>
+      <div style="display:flex; gap:10px"><a class="btn" href="/admin/invitations">Invitations</a><a class="btn" href="/admin/users">Users</a><a class="btn ghost" href="/">Go to Main Site</a></div>
+    </header>
+
+    <main class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><p class="kicker">Overview</p><h3><%= invites.length %> invites • <%= users.length %> users</h3></div>
+        <div><a class="btn" href="/admin/invitations">Manage Invitations</a></div>
+      </div>
+
+      <section class="mt-12">
+        <h4>Recent Invitations</h4>
+        <div class="table-wrap mt-8">
+          <table class="table">
+            <thead><tr><th>Title</th><th>Slug</th><th>Owner</th><th>Created</th><th></th></tr></thead>
+            <tbody>
+              <% if (!invites || invites.length === 0) { %><tr><td colspan="5">No invites found.</td></tr><% } %>
+              <% invites.forEach(inv => { %>
+                <tr>
+                  <td><strong><%= inv.title %></strong></td>
+                  <td>/i/<%= inv.slug %></td>
+                  <td><% if (inv.owner) { %><%= inv.owner.name || inv.owner.email %><br/><span class="small"><%= inv.owner.email %></span><% } else { %><span class="small">—</span><% } %></td>
+                  <td><%= new Date(inv.createdAt).toLocaleString() %></td>
+                  <td><a class="action-link" href="/i/<%= inv.slug %>" target="_blank">View</a> <a class="action-link" href="/admin/edit/<%= inv._id %>">Edit</a></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mt-12">
+        <h4>Recent Users</h4>
+        <div class="table-wrap mt-8">
+          <table class="table">
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Created</th></tr></thead>
+            <tbody>
+              <% if (!users || users.length === 0) { %><tr><td colspan="4">No users found.</td></tr><% } %>
+              <% users.forEach(u => { %>
+                <tr>
+                  <td><strong><%= u.name || u.email %></strong></td>
+                  <td class="small"><%= u.email %></td>
+                  <td><%= u.role %></td>
+                  <td><%= new Date(u.createdAt).toLocaleString() %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

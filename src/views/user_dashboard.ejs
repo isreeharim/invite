@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/><title>Dashboard</title><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"/></head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a class="brand" href="/"><div class="logo">I</div><div><h1>Dashboard</h1><p class="small"><%= currentUser.name || currentUser.email %></p></div></a>
+      <div style="display:flex; gap:10px">
+        <% if (currentUser && currentUser.role === 'admin') { %>
+          <a class="btn" href="/admin">Admin Panel</a>
+        <% } %>
+        <form method="POST" action="/logout"><button class="btn ghost" type="submit">Logout</button></form>
+      </div>
+    </header>
+
+    <main>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3>Your invites</h3>
+        <a class="btn" href="/invites/new">Create new</a>
+      </div>
+
+      <div class="table-wrap card">
+        <table class="table">
+          <thead><tr><th>Title</th><th>Slug</th><th>Created</th><th>Actions</th></tr></thead>
+          <tbody>
+            <% if (invites.length === 0) { %>
+              <tr><td colspan="4">You haven't created any invites yet.</td></tr>
+            <% } %>
+            <% invites.forEach(i => { %>
+              <tr>
+                <td><strong><%= i.title %></strong></td>
+                <td>/i/<%= i.slug %></td>
+                <td><%= new Date(i.createdAt).toLocaleString() %></td>
+                <td>
+                  <a class="action-link" href="/i/<%= i.slug %>" target="_blank">View</a>
+                  <a class="action-link" href="/invites/edit/<%= i._id %>">Edit</a>
+                  <form style="display:inline" method="POST" action="/invites/delete/<%= i._id %>" onsubmit="return confirm('Delete this invite?')">
+                    <button class="delete-btn" type="submit">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

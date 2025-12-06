@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><title>Sign up</title><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"/></head>
+<body>
+  <div class="container">
+    <main class="card" style="max-width:600px;margin:0 auto">
+      <h2>Create an account</h2>
+      <% if (error) { %><p style="color:#ffb4b4"><%= error %></p><% } %>
+      <form method="POST" action="/signup">
+        <label>Name <input class="input" name="name" value="<%= values.name || '' %>"></label>
+        <label>Email <input class="input" name="email" required value="<%= values.email || '' %>"></label>
+        <label>Password <input class="input" type="password" name="password" required></label>
+        <label>Confirm Password <input class="input" type="password" name="password2" required></label>
+        <div style="display:flex;justify-content:flex-end"><button class="btn" type="submit">Sign up</button></div>
+      </form>
+      <p class="small mt-12">Already have account? <a href="/login">Login</a></p>
+    </main>
+  </div>
+</body></html>

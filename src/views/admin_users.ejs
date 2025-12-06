@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Admin — Users</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <a class="brand" href="/admin">
+        <div class="logo">I</div>
+        <div><h1>Admin</h1><p class="small">Users</p></div>
+      </a>
+
+      <div style="display:flex; gap:10px">
+        <a class="btn" href="/admin/invitations">Invitations</a>
+        <a class="btn ghost" href="/">Main Site</a>
+      </div>
+    </header>
+
+    <main class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <p class="kicker">Users</p>
+          <h3><%= users.length %> users</h3>
+        </div>
+      </div>
+
+      <div class="mt-12 table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% if (!users || users.length === 0) { %>
+              <tr><td colspan="5">No users found.</td></tr>
+            <% } %>
+
+            <% users.forEach(u => { %>
+              <tr>
+                <td><strong><%= u.name || u.email %></strong></td>
+                <td class="small"><%= u.email %></td>
+                <td><%= u.role %></td>
+                <td><%= new Date(u.createdAt).toLocaleString() %></td>
+
+                <td style="white-space:nowrap;">
+                  
+                  <% if (u.role === 'admin') { %>
+                    <!-- DEMOTE BUTTON -->
+                    <form style="display:inline" method="POST" action="/admin/user/demote/<%= u._id %>">
+                      <button class="btn ghost" type="submit">Demote</button>
+                    </form>
+                  <% } else { %>
+                    <!-- PROMOTE BUTTON -->
+                    <form style="display:inline" method="POST" action="/admin/user/promote/<%= u._id %>">
+                      <button class="btn" type="submit">Promote</button>
+                    </form>
+                  <% } %>
+
+                  <!-- DELETE USER -->
+                  <form style="display:inline" method="POST" action="/admin/user/delete/<%= u._id %>" 
+                        onsubmit="return confirm('Delete this user? This cannot be undone.')">
+                    <button class="delete-btn" type="submit">Delete</button>
+                  </form>
+
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+
+        </table>
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

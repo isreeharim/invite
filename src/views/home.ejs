@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/><title>Invy — Home</title><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"/></head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a class="brand" href="/"><div class="logo">I</div><div><h1>Invy</h1><p class="small">Make beautiful invites — fast.</p></div></a>
+      <div>
+        <% if (!currentUser) { %>
+          <a class="btn" href="/signup">Sign up</a>
+          <a class="btn ghost" href="/login">Login</a>
+        <% } else { %>
+          <a class="btn" href="/dashboard">Dashboard</a>
+          <form style="display:inline" method="POST" action="/logout"><button class="btn ghost" type="submit">Logout</button></form>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="card">
+      <h2>Make personalized invite pages</h2>
+      <p class="small">Sign up and create your own invite pages with personalized public URLs.</p>
+      <div class="mt-12">
+        <a class="btn" href="/invites/new">Create invite</a>
+      </div>
+    </main>
+    <footer class="footer">Made with ♥</footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Guests — <%= invite.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a class="brand" href="/admin/invitations">
+        <div class="logo">I</div>
+        <div>
+          <h1>Guests</h1>
+          <p class="small"><%= invite.title %></p>
+        </div>
+      </a>
+      <div>
+        <a class="btn" href="/admin/edit/<%= invite._id %>">Edit Invite</a>
+      </div>
+    </header>
+
+    <main class="card">
+      <div style="display:flex;gap:18px;align-items:center;justify-content:space-between">
+        <div>
+          <p class="kicker">RSVP Summary</p>
+          <h3><%= summary.peopleYes || 0 %> going • <%= summary.yes || 0 %> responses</h3>
+          <p class="small"><%= summary.maybe || 0 %> maybe • <%= summary.no || 0 %> no</p>
+        </div>
+        <div>
+          <a class="btn ghost" href="/i/<%= invite.slug %>" target="_blank">View Public Invite</a>
+        </div>
+      </div>
+
+      <div class="mt-12">
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr><th>Name</th><th>Contact</th><th>Status</th><th>Guests</th><th>Message</th><th>When</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <% if (guests.length === 0) { %>
+                <tr><td colspan="7">No RSVPs yet.</td></tr>
+              <% } %>
+              <% guests.forEach(g => { %>
+                <tr>
+                  <td><strong><%= g.name %></strong></td>
+                  <td>
+                    <div class="small"><%= g.email || '-' %></div>
+                    <div class="small"><%= g.phone || '-' %></div>
+                  </td>
+                  <td><%= g.status %></td>
+                  <td><%= g.guestsCount %></td>
+                  <td><%= g.message ? (g.message.length > 80 ? g.message.substr(0,80) + '...' : g.message) : '-' %></td>
+                  <td><%= new Date(g.createdAt).toLocaleString() %></td>
+                  <td>
+                    <form method="POST" action="/admin/guest/delete/<%= g._id %>" onsubmit="return confirm('Delete this RSVP?')">
+                      <button class="delete-btn" type="submit">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="footer mt-12">
+        <a href="/admin/invitations" class="small">← Back to invitations</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

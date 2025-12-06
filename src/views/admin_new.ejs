@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/><title>Create Invitation</title><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"/></head>
+<body>
+  <div class="container">
+    <header class="header"><a class="brand" href="/admin"><div class="logo">I</div><div><h1>Create Invitation</h1><p class="small">Admin create</p></div></a><div><a class="btn" href="/admin/invitations">Back</a></div></header>
+    <main class="card" style="max-width:900px;margin:0 auto">
+      <form method="POST" action="/admin/new">
+        <label>Title: <input class="input" name="title" required value="<%= values.title || '' %>"></label>
+        <label>Slug: <input class="input" name="slug" value="<%= values.slug || '' %>"></label>
+        <label>Host / Names: <input class="input" name="hostName" value="<%= values.hostName || '' %>"></label>
+        <div class="row"><div class="col"><label>Date: <input class="input" type="date" name="date" value="<%= values.date || '' %>"></label></div><div class="col"><label>Time: <input class="input" name="time" value="<%= values.time || '' %>"></label></div></div>
+        <label>Venue: <input class="input" name="venue" value="<%= values.venue || '' %>"></label>
+        <label>Message: <textarea class="input" name="message"><%= values.message || '' %></textarea></label>
+        <div class="row"><div class="col"><label>Template: <input class="input" name="templateName" value="<%= values.templateName || 'classic1' %>"></label></div><div class="col"><label>Theme color: <input class="input" name="themeColor" value="<%= values.themeColor || '' %>"></label></div></div>
+        <label>Cover Image URL: <input class="input" name="coverImage" value="<%= values.coverImage || '' %>"></label>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><button class="btn" type="submit">Create</button></div>
+      </form>
+    </main>
+  </div>
+</body>
+</html>
