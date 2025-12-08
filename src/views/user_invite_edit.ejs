@@ -1,24 +1,88 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"/><title>Edit Invite — <%= invite.title %></title><meta name="viewport" content="width=device-width,initial-scale=1" /><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"/></head>
+<head>
+  <meta charset="utf-8"/>
+  <title>Edit Invite — <%= invite.title %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css"/>
+</head>
 <body>
   <div class="container">
-    <header class="header"><a class="brand" href="/dashboard"><div class="logo">I</div><div><h1>Edit invite</h1><p class="small"><%= invite.title %></p></div></a><div><form method="POST" action="/logout"><button class="btn ghost" type="submit">Logout</button></form></div></header>
+    <header class="header">
+      <a class="brand" href="/dashboard">
+        <div class="logo">I</div>
+        <div>
+          <h1>Edit invite</h1>
+          <p class="small"><%= invite.title %></p>
+        </div>
+      </a>
+      <div>
+        <form method="POST" action="/logout"><button class="btn ghost" type="submit">Logout</button></form>
+      </div>
+    </header>
 
     <main class="card" style="max-width:900px;margin:0 auto">
       <p class="small">Public URL: <a href="/i/<%= invite.slug %>" target="_blank">/i/<%= invite.slug %></a></p>
-      <form method="POST" action="/invites/edit/<%= invite._id %>" class="form">
-        <div class="row"><div class="col"><label>Title <input class="input" name="title" required value="<%= invite.title %>"></label></div><div class="col"><label>Slug <input class="input" name="slug" value="<%= invite.slug %>"></label></div></div>
+
+      <% if (typeof error !== 'undefined' && error) { %>
+        <p style="color:#ffb4b4"><%= error %></p>
+      <% } %>
+
+      <form method="POST" action="/invites/edit/<%= invite._id %>" class="form" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col">
+            <label>Title <input class="input" name="title" required value="<%= invite.title %>"></label>
+          </div>
+          <div class="col">
+            <label>Slug <input class="input" name="slug" value="<%= invite.slug %>"></label>
+          </div>
+        </div>
+
         <label>Host / Names <input class="input" name="hostName" value="<%= invite.hostName || '' %>"></label>
-        <div class="row"><div class="col"><label>Date <input class="input" type="date" name="date" value="<%= invite.date ? invite.date.toISOString().substr(0,10) : '' %>"></label></div><div class="col"><label>Time <input class="input" name="time" value="<%= invite.time || '' %>"></label></div></div>
+
+        <div class="row">
+          <div class="col">
+            <label>Date <input class="input" type="date" name="date" value="<%= invite.date ? invite.date.toISOString().substr(0,10) : '' %>"></label>
+          </div>
+          <div class="col">
+            <label>Time <input class="input" name="time" value="<%= invite.time || '' %>"></label>
+          </div>
+        </div>
+
         <label>Venue <input class="input" name="venue" value="<%= invite.venue || '' %>"></label>
         <label>Message <textarea class="input" name="message"><%= invite.message || '' %></textarea></label>
-        <div class="row"><div class="col"><label>Template <input class="input" name="templateName" value="<%= invite.templateName || 'classic1' %>"></label></div><div class="col"><label>Theme color (hex) <input class="input" name="themeColor" value="<%= invite.meta && invite.meta.themeColor ? invite.meta.themeColor : '' %>"></label></div></div>
-        <label>Cover image URL <input class="input" name="coverImage" value="<%= invite.meta && invite.meta.coverImage ? invite.meta.coverImage : '' %>"></label>
-        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px"><a class="btn ghost" href="/dashboard">Cancel</a><button class="btn" type="submit">Save changes</button></div>
+
+        <div class="row">
+          <div class="col">
+            <label>Template <input class="input" name="templateName" value="<%= invite.templateName || 'classic1' %>"></label>
+          </div>
+          <div class="col">
+            <label>Theme color (hex) <input class="input" name="themeColor" value="<%= invite.meta && invite.meta.themeColor ? invite.meta.themeColor : '' %>"></label>
+          </div>
+        </div>
+
+        <label>Cover image URL (optional)</label>
+        <input class="input" name="coverImage" value="<%= invite.meta && invite.meta.coverImage ? invite.meta.coverImage : '' %>" placeholder="http://example.com/image.jpg">
+
+        <label style="margin-top:8px">Or choose a new file (image) — Max 5MB</label>
+        <input class="input" type="file" name="coverImage" accept="image/*">
+
+        <% if (invite.meta && invite.meta.coverImage) { %>
+          <div style="margin:12px 0">
+            <p class="small">Current cover preview:</p>
+            <img src="<%= invite.meta.coverImage %>" alt="cover" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08)">
+          </div>
+        <% } %>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+          <a class="btn ghost" href="/dashboard">Cancel</a>
+          <button class="btn" type="submit">Save changes</button>
+        </div>
       </form>
+
       <div class="mt-12">
-        <form method="POST" action="/invites/delete/<%= invite._id %>" onsubmit="return confirm('Delete this invite? This will remove this invite.')">
+        <form method="POST" action="/invites/delete/<%= invite._id %>" onsubmit="return confirm('Delete this invite? This will remove all associated data.')">
           <button class="btn ghost" type="submit">Delete invite</button>
         </form>
       </div>
